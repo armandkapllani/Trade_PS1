@@ -1,0 +1,263 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc} 
+\usepackage{amsmath,amssymb}
+\usepackage{parskip} 
+\usepackage[usenames,dvipsnames,table]{xcolor} 
+\usepackage{fancyvrb} 
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref} 
+\DeclareMathOperator{\E}{\mathbb{E}}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\usepackage{mdframed}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{listings}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{fancyvrb} 
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+%% the following commands are needed for some matlab2tikz features
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{arrows.meta}
+\usepgfplotslibrary{patchplots}
+\usepackage{grffile}
+\usepackage{amsmath}
+\usetikzlibrary{patterns}
+\usepackage{subcaption}
+\usepackage{rotating}
+\usepackage{lscape}
+\usepackage{standalone}
+\usepackage{enumitem}
+\usepackage{shadethm}
+\usepackage{setspace}
+\usetikzlibrary{calc,matrix}
+\newshadetheorem{thm}{Theorem}
+\definecolor{shadethmcolor}{HTML}{EDF8FF}
+\definecolor{shaderulecolor}{HTML}{45CFFF}
+\setlength{\shadeboxrule}{.4pt}
+\setlength{\parindent}{5ex}
+
+\makeatletter
+\@addtoreset{equation}{section}
+\@addtoreset{equation}{subsection}
+\@addtoreset{equation}{subsubsection}
+\@addtoreset{equation}{paragraph}
+\@addtoreset{equation}{subparagraph}
+\makeatother
+
+
+\hypersetup{
+	colorlinks = true,
+	urlcolor   = blue,
+	linkcolor  = blue,
+	citecolor  = red
+}
+
+\usepackage{logicproof} 
+\usepackage{tikz} 
+\usetikzlibrary{trees,positioning}
+\usepackage{tikz}
+
+
+\DeclareMathOperator{\di}{d\!}
+\newcommand*\Eval[3]{\left.#1\right\rvert_{#2}^{#3}}
+
+
+% ------------------------------------------------------------------------------------
+% ------------------------------------------------------------------------------------
+
+
+
+
+
+\title{\large Problem Set I}
+
+\author{ECO7707 - International Economic Relations \\
+	\small{Professor Gunnar Heins}}
+
+\date{\small{\textit{Armand Kapllani} - Spring 2018}}
+
+\begin{document}
+	\maketitle
+
+\section*{Data Collection and Gravity Equation}
+
+1. Use the function get.Comtrade() which we discussed in class to download all trade flows between the 20 largest countries for the year 2014. Collect only information on the total trade (i.e. use c = ”TOTAL”) but get information on both imports and exports.
+
+\begin{lstlisting}[language=R, small]
+
+# Import the datasets on countries GDP for two years 2014 and 1995. 
+#-----------------------------------------------------------------------------------------
+
+gdp_1995 <- read.csv("/Users/armandkapllani/Desktop/UF Econ/International Economic Relations/PS1/gdp_1995.csv", header = T)
+gdp_2014 <- read.csv("/Users/armandkapllani/Desktop/UF Econ/International Economic Relations/PS1/gdp_2014.csv", header = T)
+distance <- read.csv("/Users/armandkapllani/Desktop/UF Econ/International Economic Relations/PS1/distance.csv", header = T)
+
+gdp_1995 <- data.table(gdp_1995)
+gdp_2014 <- data.table(gdp_2014)
+
+
+# 1.1. Use the function get.Comtrade() which we discussed in class to download all 
+#      trade flows between the 20 largest countries for the year 2014. Collect only 
+#      information on the total trade (i.e. use c = "TOTAL") but get information on 
+#      both imports and exports.
+#-----------------------------------------------------------------------------------------
+
+## Exports (2014)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d1 <- NULL
+for (i_c in I_C[1:5]) {     
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "2", c = "TOTAL", ps = "2014")
+d1 <- rbind(d1, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+Sys.sleep(3660)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d2 <- NULL
+for (i_c in I_C[6:10]) {
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "2", c = "TOTAL", ps = "2014")
+d2 <- rbind(d2, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+Sys.sleep(3660)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d3 <- NULL
+for (i_c in I_C[11:15]) {
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "2", c = "TOTAL", ps = "2014")
+d3 <- rbind(d3, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+Sys.sleep(3660)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d4 <- NULL
+for (i_c in I_C[16:20]) {
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "2", c = "TOTAL", ps = "2014")
+d4<- rbind(d4, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+dta <- rbind(d1, d2, d3, d4)
+dta <- data.table(data)
+
+## Imports (2014)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d5 <- NULL
+for (i_c in I_C[1:5]) {     
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "1", c = "TOTAL", ps = "2014")
+d5 <- rbind(d5, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+Sys.sleep(3660)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d6 <- NULL
+for (i_c in I_C[6:10]) {     
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "1", c = "TOTAL", ps = "2014")
+d6 <- rbind(d6, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+Sys.sleep(3660)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d7 <- NULL
+for (i_c in I_C[11:15]) {     
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "1", c = "TOTAL", ps = "2014")
+d7 <- rbind(d7, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+Sys.sleep(3660)
+
+I_C <- as.character(c(gdp_2014$cty_code))
+d8 <- NULL
+for (i_c in I_C[16:20]) {
+for (i_k in I_C) {
+if (i_c == i_k) {
+next
+}
+else if (i_c != i_k) {
+data_i_c <- get.Comtrade(r = i_c, p = i_k, rg = "1", c = "TOTAL", ps = "2014")
+d8 <- rbind(d8, data_i_c)
+}
+}
+Sys.sleep(10)
+}
+
+data_countries_2014 <- rbind(d1, d2, d3, d4, d5, d6, d7, d8)  
+data_countries_2014 <- data.table(data_countries_2014) 
+
+\end{lstlisting}
+
+
+	
+	
+	
+	
+\end{document}	
